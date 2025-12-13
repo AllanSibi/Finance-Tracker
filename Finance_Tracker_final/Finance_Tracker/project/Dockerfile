@@ -2,7 +2,6 @@ FROM eclipse-temurin:17-jdk-alpine
 
 WORKDIR /app
 
-# copy everything from the current (project) directory
 COPY . .
 
 RUN chmod +x mvnw
