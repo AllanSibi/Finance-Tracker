@@ -6,22 +6,25 @@ class ExpenseManager {
         this.listeners = [];
     }
 
-    async loadExpenses() {
-        const token = localStorage.getItem("ft_token");
-        if (!token) throw new Error("No authentication token");
+async loadExpenses() {
+  const token = localStorage.getItem("ft_token");
+  if (!token) return [];
 
-        const res = await fetch(`${window.API_BASE_URL}/api/expenses`, {
-            headers: {
-                Authorization: "Bearer " + token
-            }
-        });
-
-        if (!res.ok) throw new Error("Failed to load expenses");
-
-        this.expenses = await res.json();
-        this.notifyListeners();
-        return this.expenses;
+  const res = await fetch(`${API_BASE_URL}/api/expenses`, {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
     }
+  });
+
+  if (!res.ok) throw new Error("Failed to load expenses");
+
+  const data = await res.json();
+  this.expenses = data;
+  this.notifyListeners();
+  return data;
+}
+
 
     async addExpense(expense) {
         const token = localStorage.getItem("ft_token");
