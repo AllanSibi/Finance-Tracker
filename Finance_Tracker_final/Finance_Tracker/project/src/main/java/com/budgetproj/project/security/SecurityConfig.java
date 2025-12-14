@@ -23,19 +23,37 @@ public class SecurityConfig {
     }
 
     // Security filter chain where we register our JwtAuthFilter
-    @Bean
+   @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
+
     http
         .csrf(csrf -> csrf.disable())
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(auth -> auth
+
+            // ✅ Allow static UI pages
             .requestMatchers(
-                "/",                  // ✅ allow root URL
-                "/error",
-                "/api/auth/**",        // login/register
-                "/api/expenses/**",    // if you want expenses public
-                "/actuator/**"
+                "/",
+                "/index.html",
+                "/login.html",
+                "/register.html",
+                "/dashboard.html",
+                "/addexpense.html",
+                "/assets/**",        // CSS, JS, images
+                "/favicon.ico",
+                "/error"
             ).permitAll()
+
+            // ✅ Allow auth APIs
+            .requestMatchers("/api/auth/**").permitAll()
+
+            // 🔐 Protect expenses API (recommended)
+            .requestMatchers("/api/expenses/**").authenticated()
+
+            // ✅ Allow health check
+            .requestMatchers("/health").permitAll()
+
+            // 🔐 Everything else needs login
             .anyRequest().authenticated()
         );
 
@@ -44,6 +62,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthFilter 
 
     return http.build();
 }
+
 
 
     // CORS configuration: allow any origin pattern and credentials (use explicit origins in prod)
