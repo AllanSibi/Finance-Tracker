@@ -1,3 +1,6 @@
+const API_BASE_URL = "https://finance-tracker-1e3f.onrender.com";
+
+
 // main.js — handles authentication, UI helpers, and global actions
 
 // ========== Utility Functions ==========
@@ -92,7 +95,7 @@ function isValidEmail(email) {
 }
 async function loginUser(email, password) {
     try {
-        const res = await fetch("http://localhost:8080/api/auth/login", {
+        const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password }),
@@ -109,18 +112,18 @@ async function loginUser(email, password) {
         showToast("Login successful!", "success");
         setTimeout(() => (window.location.href = "dashboard.html"), 800);
     } catch (err) {
-        if (err && typeof err.message === 'string' && err.message.toLowerCase().includes('invalid')) {
-            // Fancy alert for invalid credentials (password)
-            showAuthAlert('Invalid Password', { title: 'Login Failed' });
+        if (err?.message?.toLowerCase().includes("invalid")) {
+            showAuthAlert("Invalid Password", { title: "Login Failed" });
         } else {
-            showToast(err.message || 'Login failed', "error");
+            showToast(err.message || "Login failed", "error");
         }
     }
 }
 
+
 async function registerUser(name, email, password) {
     try {
-        const res = await fetch("http://localhost:8080/api/auth/register", {
+        const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, email, password }),
@@ -138,6 +141,13 @@ async function registerUser(name, email, password) {
     } catch (err) {
         showToast(err.message, "error");
     }
+}
+
+
+function logoutUser() {
+    localStorage.removeItem("ft_token");
+    showToast("Logged out successfully", "info");
+    setTimeout(() => (window.location.href = "login.html"), 800);
 }
 
 function logoutUser() {

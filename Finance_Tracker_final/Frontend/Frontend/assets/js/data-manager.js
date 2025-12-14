@@ -1,4 +1,7 @@
 // data-manager.js — centralized expense data management
+
+const API_BASE_URL = "https://finance-tracker-1e3f.onrender.com";
+
 class ExpenseManager {
     constructor() {
         this.expenses = [];
@@ -12,8 +15,10 @@ class ExpenseManager {
         }
 
         try {
-            const res = await fetch("http://localhost:8080/api/expenses", {
-                headers: { Authorization: "Bearer " + token },
+            const res = await fetch(`${API_BASE_URL}/api/expenses`, {
+                headers: {
+                    Authorization: "Bearer " + token,
+                },
             });
 
             if (res.ok) {
@@ -38,7 +43,7 @@ class ExpenseManager {
         }
 
         try {
-            const res = await fetch("http://localhost:8080/api/expenses", {
+            const res = await fetch(`${API_BASE_URL}/api/expenses`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -68,9 +73,11 @@ class ExpenseManager {
         }
 
         try {
-            const res = await fetch(`http://localhost:8080/api/expenses/${expenseId}`, {
+            const res = await fetch(`${API_BASE_URL}/api/expenses/${expenseId}`, {
                 method: "DELETE",
-                headers: { Authorization: "Bearer " + token },
+                headers: {
+                    Authorization: "Bearer " + token,
+                },
             });
 
             if (res.ok) {
