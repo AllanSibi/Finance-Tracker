@@ -102,6 +102,12 @@
     </style>
 </head>
 <body class="app">
+    <script>
+    if (!localStorage.getItem("ft_token")) {
+        window.location.replace("login.html");
+    }
+</script>
+
 <header class="app-header">
     <a class="brand" href="index.html">Finance Tracker</a>
     <div class="app-actions">

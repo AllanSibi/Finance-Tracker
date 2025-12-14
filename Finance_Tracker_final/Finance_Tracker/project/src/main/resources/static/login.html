@@ -11,6 +11,13 @@
     <meta name="description" content="Login to Finance Tracker to manage your expenses and budget." />
 </head>
 <body class="auth">
+    <script>
+    const token = localStorage.getItem("ft_token");
+    if (token) {
+        window.location.replace("dashboard.html");
+    }
+</script>
+
     <!-- Floating Background Elements -->
     <div class="auth-bg" aria-hidden="true">
         <div class="ring r1"></div>

@@ -1,7 +1,4 @@
-const API_BASE_URL = "https://finance-tracker-1e3f.onrender.com";
-
-
-// main.js — handles authentication, UI helpers, and global actions
+    // main.js — handles authentication, UI helpers, and global actions
 
 // ========== Utility Functions ==========
 function showToast(message, type = "info") {
@@ -96,10 +93,11 @@ function isValidEmail(email) {
 async function loginUser(email, password) {
     try {
         const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-        });
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+});
+
 
         if (!res.ok) {
             if (res.status === 401) throw new Error("Invalid credentials");
@@ -124,10 +122,10 @@ async function loginUser(email, password) {
 async function registerUser(name, email, password) {
     try {
         const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, password }),
-        });
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+});
 
         if (!res.ok) {
             const msg = await res.text();

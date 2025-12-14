@@ -8,6 +8,14 @@
     <meta name="description" content="Track expenses, visualize spending, and stay on top of your budget with Finance Tracker." />
 </head>
 <body class="home">
+    <script>
+    const token = localStorage.getItem("ft_token");
+    if (token) {
+        window.location.replace("dashboard.html");
+    }
+</script>
+
+
     <!-- Scroll Progress Indicator -->
     <div class="scroll-progress" id="scroll-progress"></div>
 
