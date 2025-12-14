@@ -90,33 +90,28 @@ function isValidEmail(email) {
     // Basic but robust email pattern
     return /^([a-zA-Z0-9_\-.+])+@([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}$/.test(email);
 }
+const API_BASE_URL = "https://finance-tracker-1e3f.onrender.com";
+
+// LOGIN
 async function loginUser(email, password) {
     try {
         const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-});
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+        });
 
-
-        if (!res.ok) {
-            if (res.status === 401) throw new Error("Invalid credentials");
-            if (res.status === 404) throw new Error("User not found");
-            throw new Error("Login failed");
-        }
+        if (!res.ok) throw new Error("Invalid credentials");
 
         const data = await res.json();
         localStorage.setItem("ft_token", data.token);
-        showToast("Login successful!", "success");
-        setTimeout(() => (window.location.href = "dashboard.html"), 800);
+        window.location.href = "dashboard.html";
     } catch (err) {
-        if (err?.message?.toLowerCase().includes("invalid")) {
-            showAuthAlert("Invalid Password", { title: "Login Failed" });
-        } else {
-            showToast(err.message || "Login failed", "error");
-        }
+        showToast(err.message, "error");
+        console.error(err);
     }
 }
+
 
 
 async function registerUser(name, email, password) {
@@ -141,13 +136,6 @@ async function registerUser(name, email, password) {
     }
 }
 
-
-function logoutUser() {
-    localStorage.removeItem("ft_token");
-    showToast("Logged out successfully", "info");
-    setTimeout(() => (window.location.href = "login.html"), 800);
-}
-
 function logoutUser() {
     localStorage.removeItem("ft_token");
     showToast("Logged out successfully", "info");
@@ -167,15 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginBtn = document.getElementById("login-btn");
     const signupBtn = document.getElementById("signup-btn");
     const logoutBtn = document.getElementById("logout-btn");
-
-    if (loginBtn) {
-        loginBtn.addEventListener("click", () => {
-            const email = document.getElementById("email").value.trim();
-            const password = document.getElementById("password").value.trim();
-            if (!email || !password) return showToast("Fill all fields", "error");
-            loginUser(email, password);
-        });
-    }
 
     if (signupBtn) {
         signupBtn.addEventListener("click", () => {
